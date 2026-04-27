@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ui-route
+spec:
+  to:
+    kind: Service
+    name: ui-service
+  port:
+    # Tämän on oltava 8080, koska Nginx kuuntelee sitä 
+    # ja se on määritelty Servicen targetPortiksi.
+    targetPort: 8080 
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
