@@ -16,7 +16,10 @@ spec:
     spec:
       # 1. OpenShiftissä 'default' SA riittää usein, jos et tarvitse erikoisoikeuksia.
       # Jos käytät omaa, varmista että se on luotu OpenShiftiin.
-      serviceAccountName: my-app-ksa 
+      serviceAccountName: my-app-ksa
+      volumes:
+      - name: log-dir
+        emptyDir: {}
       
       # 2. Lisää tämä, jotta OpenShift saa haettua kuvat Google Artifact Registrystä
       imagePullSecrets:
@@ -24,6 +27,10 @@ spec:
 
       containers:
       - name: api-container
+        image: api-image
+        volumeMounts:
+        - name: log-dir
+          mountPath: /log/java_api
         env:
           # Ohjataan lokitiedostot paikkaan, johon OpenShift saa kirjoittaa
           - name: LOGGING_FILE_PATH
@@ -31,7 +38,6 @@ spec:
           # Tai jos sovelluksesi käyttää tiettyä muuttujaa polulle:
           - name: LOG_PATH
             value: /tmp
-        image: api-image 
         ports:
           - containerPort: 8090
         
