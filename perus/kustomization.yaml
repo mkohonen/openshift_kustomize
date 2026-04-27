@@ -1,0 +1,19 @@
+resources:
+  - ui-deployment.yaml
+  - ui-service.yaml
+  - api-deployment.yaml
+  - api-service.yaml
+  - nginx-config.yaml
+  - namespace.yaml
+  - ingress.yaml
+  - backend-config.yaml
+  - api-pdb.yaml
+  - ui-pdb.yaml
+
+images:
+  - name: ui-image
+    newName: europe-north1-docker.pkg.dev/gen-lang-client-0952591329/react-kilpailu-docker/file-client
+    # newTag: latest
+  - name: api-image
+    newName: europe-north1-docker.pkg.dev/gen-lang-client-0952591329/java-api-docker/java-api
+    # newTag: latest

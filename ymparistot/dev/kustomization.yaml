@@ -1,0 +1,23 @@
+resources:
+  - ../../perus
+namespace: mkdev
+replicas:
+  - name: react-ui
+    count: 1
+  - name: springboot-api
+    count: 1
+patches:
+  - target:
+      kind: PodDisruptionBudget
+      name: ui-pdb
+    patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 0
+  - target:
+      kind: PodDisruptionBudget
+      name: api-pdb
+    patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 0

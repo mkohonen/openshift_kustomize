@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-ui
+spec:
+  # Replicas määritellään overlay-tasolla
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      serviceAccountName: my-app-ksa
+      containers:
+      - name: ui-container
+        # Image voidaan myös päivittää kustomization.yaml-tiedostossa, k8s/base/kustomization.yaml taivain test-ympäristössä, voit ylikirjoittaa kuvan ,,/test/kustomization.yaml
+        image: ui-image  # Kustomize korvaa tämän base tai overlay kustomization.yaml-tiedostosta
+        ports:
+          - containerPort: 80
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/nginx/conf.d
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "32Mi"
+          limits:
+            cpu: "50m"
+            memory: "64Mi"
+      volumes:
+      - name: config-volume
+        configMap:
+          name: ui-config
+

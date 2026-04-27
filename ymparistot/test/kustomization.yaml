@@ -1,0 +1,23 @@
+resources:
+  - ../../perus
+namespace: mktest
+replicas:
+  - name: react-ui
+    count: 2
+  - name: springboot-api
+    count: 3
+patches:
+  - target:
+      kind: PodDisruptionBudget
+      name: ui-pdb # Pitää täsmätä tiedoston nimeen
+    patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 0  # Sallii kaikkien podien alasajon testissä, mutta poistaa GKE-varoituksen
+  - target:
+      kind: PodDisruptionBudget
+      name: api-pdb # Pitää täsmätä tiedoston nimeen
+    patch: |-
+      - op: replace
+        path: /spec/minAvailable
+        value: 0  # Sallii kaikkien podien alasajon testissä, mutta poistaa GKE-varoituksen

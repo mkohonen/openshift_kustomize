@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-ui-service
+spec:
+  selector:
+    app: ui
+  ports:
+    - protocol: TCP
+      port: 80         # Portti, jota Service kuuntelee (selain)
+      targetPort: 80   # Portti, jossa sovellus pyörii kontin sisällä
+  #type: LoadBalancer   # GCP luo automaattisesti ulkoisen IP-osoitteen
+  type: NodePort       # Muutettu: LoadBalancer -> NodePort Ingress kayttoon

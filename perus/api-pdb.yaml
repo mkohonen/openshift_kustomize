@@ -1,0 +1,17 @@
+# Tiivistettynä Pod Disruption Budget (PDB) on sovelluksesi "turvatakuu" Kubernetes-klusterissa:
+# Estää käyttökatkot: Se kieltää Kubernetesia sammuttamasta kaikkia sovelluksesi podeja yhtä aikaa esimerkiksi
+# klusterin päivityksen tai solmujen huollon aikana.
+# Määrittää minimitason: Kerrot sillä, kuinka monta sovelluksen kopiota (podia) on pakko olla aina käynnissä
+# (esim. minAvailable: 1).
+# Hallitsee muutoksia: Kun Google Cloud päivittää klusteriasi, se katsoo PDB:tä ja odottaa, että uusi pod on valmis ennen kuin
+# se uskaltaa poistaa vanhan käytöstä.
+# Lyhyesti: PDB varmistaa, että sovelluksesi pysyy tavoitettavissa, vaikka Googlen infrastruktuuria huollettaisiin.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: api # Varmista, että tämä vastaa API-deploymentin selectoria

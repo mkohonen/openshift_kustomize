@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      serviceAccountName: my-app-ksa
+      containers:
+      - name: api-container
+        image: api-image  # Paikkamerkki, joka korvataan kustomization.yamlissa
+        ports:
+          - containerPort: 8090
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "512Mi"
+          limits:
+            cpu: "200m"
+            memory: "1024Mi"
