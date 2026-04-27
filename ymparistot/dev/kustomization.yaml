@@ -1,11 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - ../../perus
-namespace: mkdev
+
+# Kokeile ensin ilman tätä, jos oc apply antaa Forbidden-virheen
+namespace: mkh985-dev
+
 replicas:
   - name: react-ui
     count: 1
   - name: springboot-api
     count: 1
+
 patches:
   - target:
       kind: PodDisruptionBudget
@@ -21,3 +28,4 @@ patches:
       - op: replace
         path: /spec/minAvailable
         value: 0
+

@@ -3,10 +3,8 @@ resources:
   - ui-service.yaml
   - api-deployment.yaml
   - api-service.yaml
-  - nginx-config.yaml
-  - namespace.yaml
-  - ingress.yaml
-  - backend-config.yaml
+  - api-route.yaml
+  - ui-route.yaml
   - api-pdb.yaml
   - ui-pdb.yaml
 
@@ -17,3 +15,7 @@ images:
   - name: api-image
     newName: europe-north1-docker.pkg.dev/gen-lang-client-0952591329/java-api-docker/java-api
     # newTag: latest
+configMapGenerator:
+  - name: nginx-config
+    files:
+      - nginx.conf=nginx.conf # Viittaa suoraan tekstitiedostoon, ei YAML-wrapperiin

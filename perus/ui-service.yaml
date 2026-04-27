@@ -1,13 +1,13 @@
+# perus/ui-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: react-ui-service
+  name: ui-service
 spec:
   selector:
     app: ui
   ports:
     - protocol: TCP
-      port: 80         # Portti, jota Service kuuntelee (selain)
-      targetPort: 80   # Portti, jossa sovellus pyörii kontin sisällä
-  #type: LoadBalancer   # GCP luo automaattisesti ulkoisen IP-osoitteen
-  type: NodePort       # Muutettu: LoadBalancer -> NodePort Ingress kayttoon
+      port: 80       # Ulkoinen portti klusterin sisällä
+      targetPort: 8080 # Pitää täsmätä nginx.conf:n 'listen' kanssa
+  type: ClusterIP

@@ -1,0 +1,25 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: api-route
+  labels:
+    app: api
+spec:
+  # Jätä 'host' tyhjäksi perus-versiossa. 
+  # OpenShift generoi tällöin automaattisesti osoitteen:
+  # ://domain.com
+  # host: 
+
+  to:
+    kind: Service
+    name: api-service # Varmista että tämä vastaa api-service.yaml:n nimeä
+    weight: 100
+  
+  port:
+    targetPort: 8090 # Portti, johon liikenne ohjataan (Service)
+
+  tls:
+    # 'edge' on yleisin: TLS puretaan OpenShiftin reitittimellä (Router),
+    # ja liikenne klusterin sisällä on HTTP:ta.
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect # Ohjaa http -> https

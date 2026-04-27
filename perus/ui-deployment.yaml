@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: react-ui
 spec:
-  # Replicas määritellään overlay-tasolla
   selector:
     matchLabels:
       app: ui
@@ -12,25 +11,42 @@ spec:
       labels:
         app: ui
     spec:
-      serviceAccountName: my-app-ksa
+      # 1. Lisää salaisuus Google Artifact Registryä varten
+      imagePullSecrets:
+        - name: google-registry-key
+      
+      # OpenShiftissä voit usein käyttää 'default' SA:ta, jos et tarvitse GCP-oikeuksia
+      serviceAccountName: my-app-ksa 
+
       containers:
       - name: ui-container
-        # Image voidaan myös päivittää kustomization.yaml-tiedostossa, k8s/base/kustomization.yaml taivain test-ympäristössä, voit ylikirjoittaa kuvan ,,/test/kustomization.yaml
-        image: ui-image  # Kustomize korvaa tämän base tai overlay kustomization.yaml-tiedostosta
+        image: ui-image
         ports:
-          - containerPort: 80
+          - containerPort: 8080 # MUUTETTU: OpenShift Nginx-standardi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/nginx/conf.d
         resources:
           requests:
             cpu: "10m"
-            memory: "32Mi"
+            memory: "64Mi" # Hieman nostettu varmuuden vuoksi
           limits:
             cpu: "50m"
-            memory: "64Mi"
+            memory: "128Mi"
+        
+        # 2. OpenShift Security Context (Sama kuin API:lla)
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+
       volumes:
       - name: config-volume
         configMap:
-          name: ui-config
+          # 3. TÄRKEÄÄ: Nimen on oltava sama kuin perus/kustomization.yaml:n generatorissa
+          name: nginx-config 
 
