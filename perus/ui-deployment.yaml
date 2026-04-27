@@ -25,7 +25,8 @@ spec:
           - containerPort: 8080 # MUUTETTU: OpenShift Nginx-standardi
         volumeMounts:
         - name: config-volume
-          mountPath: /etc/nginx/conf.d
+          mountPath: /etc/nginx/nginx.conf  # MUUTETTU TÄMÄ
+          subPath: nginx.conf              # LISÄTTY TÄMÄ
         resources:
           requests:
             cpu: "10m"
