@@ -24,6 +24,13 @@ spec:
 
       containers:
       - name: api-container
+        env:
+          # Ohjataan lokitiedostot paikkaan, johon OpenShift saa kirjoittaa
+          - name: LOGGING_FILE_PATH
+            value: /tmp
+          # Tai jos sovelluksesi käyttää tiettyä muuttujaa polulle:
+          - name: LOG_PATH
+            value: /tmp
         image: api-image 
         ports:
           - containerPort: 8090
