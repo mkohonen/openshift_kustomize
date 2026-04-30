@@ -1,10 +1,12 @@
+# Tuodaan mukaan sovelluksen osat ja valvonta
 resources:
   - ui-deployment.yaml
   - ui-service.yaml
+  - ui-route.yaml
   - api-deployment.yaml
   - api-service.yaml
   - api-route.yaml
-  - ui-route.yaml
+  - servicemonitor.yaml
   - api-pdb.yaml
   - ui-pdb.yaml
 
