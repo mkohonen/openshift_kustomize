@@ -1,14 +1,16 @@
-apiVersion: ://coreos.com
+apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: spring-boot-monitor
+  namespace: mkh985-dev
   labels:
-    team: backend # Varmista, että tämä vastaa Prometheuksen selector-labelia
+    team: backend
 spec:
   selector:
     matchLabels:
-      app: api # Tämän on vastattava sovelluksesi Servicen labelia
+      app: api # Varmista, että api-servicellä on tämä sama label
   endpoints:
-  - port: http # Servicessä määritelty portin nimi
+  - port: http
     path: /actuator/prometheus
     interval: 30s
+
